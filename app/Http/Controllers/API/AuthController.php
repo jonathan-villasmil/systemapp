@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{
@@ -15,7 +16,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -32,6 +33,10 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        $userRole = Role::findByName('user');
+
+        $user->assignRole($userRole);
 
         event(new Registered($user));
 
@@ -65,10 +70,7 @@ class AuthController extends Controller
         ]);
     }
 
-    // public function user(Request $request)
-    // {
-    //     return $request->user();
-    // }
+
 
     public function logout(Request $request)
     {
@@ -120,5 +122,13 @@ class AuthController extends Controller
         );
 
         return response()->json(['message' => __($status)]);
+    }
+
+
+
+    public function user(Request $request)
+    {
+        $users = User::All();
+        return response()->json(UserResource::collection($users));
     }
 }
