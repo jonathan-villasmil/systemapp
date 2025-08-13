@@ -4,9 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 
-use App\Http\Controllers\API\RoleController;
-
-use App\Http\Controllers\API\PermissionController;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\PermissionController;
 
 
 // use App\Http\Controllers\API\UserPermissionController;
@@ -44,6 +43,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/give-permission', [PermissionController::class, 'givePermission']);
     Route::post('/revoke-permission', [PermissionController::class, 'revokePermission']);
     //Route::get('/roles-permissions', [UserPermissionController::class, 'getUserRolesPermissions']);
+
+
+
 
 
 
