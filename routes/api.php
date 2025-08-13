@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\API\RoleController;
 
 use App\Http\Controllers\API\PermissionController;
+
+
 // use App\Http\Controllers\API\UserPermissionController;
 
 Route::get('/user', function (Request $request) {
@@ -45,4 +47,15 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
 
 
+
+
+
+
+});
+
+Route::middleware(['auth:sanctum', 'role:client'])->group(function () {
+    // carta
+    //reservas
+    //login y registro
+    //información general de los puntos de venta
 });

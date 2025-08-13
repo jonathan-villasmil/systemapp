@@ -15,25 +15,68 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear los roles si no existen
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $userRole = Role::firstOrCreate(['name' => 'user']);
+        //create permissions Users
+        $pernission = Permission::firstOrCreate(['name' => 'create user']);
+        $pernission = Permission::firstOrCreate(['name' => 'show user']);
+        $pernission = Permission::firstOrCreate(['name' => 'update user']);
+        $pernission = Permission::firstOrCreate(['name' => 'delete user']);
 
+        //create permissions Products
+        $pernission = Permission::firstOrCreate(['name' => 'create product']);
+        $pernission = Permission::firstOrCreate(['name' => 'show product']);
+        $pernission = Permission::firstOrCreate(['name' => 'update product']);
+        $pernission = Permission::firstOrCreate(['name' => 'delete product']);
 
-        $pernission = Permission::firstOrCreate(['name' => 'create']);
-        $pernission = Permission::firstOrCreate(['name' => 'show']);
-        $pernission = Permission::firstOrCreate(['name' => 'update']);
-        $pernission = Permission::firstOrCreate(['name' => 'delete']);
-
-        // Crear un usuario admin
-        $admin = User::create([
+        // Crear un usuario Admin
+        $adminUser = User::create([
             'name' => 'Jonathan',
             'email' => 'admin@admin.com',
             'password' => bcrypt('123456789'), // cambia esto en producción
             'email_verified_at' => now(), // para evitar problemas con verificación
         ]);
 
+        // Crear los roles si no existen
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+
         // Asignar el rol admin
-        $admin->assignRole($adminRole);
+        $adminUser->assignRole($adminRole);
+
+        $pernissionsAdmin = Permission::query()->pluck('name');
+
+        $adminRole->syncPermissions($pernissionsAdmin);
+
+
+
+        // Crear un usuario Cliente
+        $clientUser = User::create([
+            'name' => 'Juan',
+            'email' => 'client@client.com',
+            'password' => bcrypt('123456789'), // cambia esto en producción
+            'email_verified_at' => now(), // para evitar problemas con verificación
+        ]);
+
+        // Crear los roles si no existen
+        $clientRole = Role::firstOrCreate(['name' => 'client']);
+        // Asignar el rol cliente
+        $clientUser->assignRole($clientRole);
+
+
+
+        // Crear un usuario Manager
+        $managerUser = User::create([
+            'name' => 'manager',
+            'email' => 'manager@manager.com',
+            'password' => bcrypt('123456789'), // cambia esto en producción
+            'email_verified_at' => now(), // para evitar problemas con verificación
+        ]);
+
+        // Crear los roles si no existen
+        $managerRole = Role::firstOrCreate(['name' => 'manager']);
+
+        // Asignar el rol cliente
+        $managerUser->assignRole($managerRole);
+
+        $managerRole->syncPermissions(['create product','show product','update product','delete product']);
+
     }
 }

@@ -34,7 +34,7 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-        $userRole = Role::findByName('user');
+        $userRole = Role::findByName('client');
 
         $user->assignRole($userRole);
 
@@ -125,7 +125,7 @@ class AuthController extends Controller
     }
 
 
-
+    // seria el index de controlador de usuarios
     public function user(Request $request)
     {
         $users = User::All();
